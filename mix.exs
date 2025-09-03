@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Compile.Make do
   def run(_) do
     {result, _error_code} = System.cmd("make", [], stderr_to_stdout: true)
-    Mix.shell.info result
+    Mix.shell().info(result)
 
     :ok
   end
@@ -10,7 +10,7 @@ end
 defmodule Mix.Tasks.Clean.Make do
   def run(_) do
     {result, _error_code} = System.cmd("make", ["clean"], stderr_to_stdout: true)
-    Mix.shell.info result
+    Mix.shell().info(result)
 
     :ok
   end
@@ -20,16 +20,21 @@ defmodule Captcha.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :captcha,
-     version: "0.1.0",
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     compilers: [:make, :elixir, :app],
-     description: description(),
-     aliases: aliases(),
-     package: package(),
-     deps: deps()]
+    [
+      app: :captcha,
+      version: "0.1.1",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      compilers: [:make, :elixir, :app],
+      description: description(),
+      aliases: aliases(),
+      package: package(),
+      deps: deps(),
+      elixirc_options: [
+        warnings_as_errors: true
+      ]
+    ]
   end
 
   # Configuration for the OTP application
@@ -59,16 +64,31 @@ defmodule Captcha.Mixfile do
   defp description do
     """
     This is a Elixir lib for generating captcha. No dependencies. It drawing captcha image with C code. No ImageMagick, No RMagick.
+
+    This version includes critical production reliability improvements that fix intermittent empty image generation in production environments.
     """
   end
 
   defp package do
     [
-     name: :captcha,
-     files: ["lib", "priv", "mix.exs", "README*", "LICENSE*", "src", "test", "config", "Makefile"],
-     maintainers: ["davidqhr"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/davidqhr/elixir-captcha",
-              "Docs" => "https://github.com/davidqhr/elixir-captcha"}]
+      name: :captcha,
+      files: [
+        "lib",
+        "priv",
+        "mix.exs",
+        "README*",
+        "LICENSE*",
+        "src",
+        "test",
+        "config",
+        "Makefile"
+      ],
+      maintainers: ["davidqhr"],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/davidqhr/elixir-captcha",
+        "Docs" => "https://github.com/davidqhr/elixir-captcha"
+      }
+    ]
   end
 end
