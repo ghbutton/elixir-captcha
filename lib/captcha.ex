@@ -1,23 +1,29 @@
 defmodule Captcha do
   @moduledoc """
   Improved captcha generation library that works reliably in both development and production environments.
-  
+
   This version uses System.cmd instead of Port.open to avoid issues with process management,
   working directory, and environment variables that can cause problems in production deployments.
   """
 
   @doc """
   Generates a captcha image and returns the text and image data.
-  
+
   Returns:
   - `{:ok, text, image_data}` - Success with 5-character text and GIF image data
-  - `{:timeout}` - If generation takes too long
   - `{:error, reason}` - If generation fails
-  
+
+  Note: Timeout handling is not implemented in this version due to Elixir version constraints.
+
   ## Examples
-  
-      iex> Captcha.get()
-      {:ok, "abc12", <<71, 73, 70, 56, 57, 97, ...>>}
+
+      iex> {:ok, text, image_data} = Captcha.get()
+      iex> is_binary(text)
+      true
+      iex> byte_size(text)
+      5
+      iex> is_binary(image_data)
+      true
   """
   def get() do
     get_with_timeout(2000)
@@ -25,30 +31,35 @@ defmodule Captcha do
 
   @doc """
   Generates a captcha with a custom timeout in milliseconds.
-  
+
+  Note: Timeout parameter is currently ignored due to Elixir version constraints.
+
   ## Examples
-  
-      iex> Captcha.get(5000)  # 5 second timeout
-      {:ok, "abc12", <<71, 73, 70, 56, 57, 97, ...>>}
+
+      iex> {:ok, text, image_data} = Captcha.get(5000)
+      iex> is_binary(text)
+      true
+      iex> byte_size(text)
+      5
+      iex> is_binary(image_data)
+      true
   """
   def get(timeout) when is_integer(timeout) and timeout > 0 do
     get_with_timeout(timeout)
   end
 
   # Private function that handles the actual captcha generation
-  defp get_with_timeout(timeout) do
+  defp get_with_timeout(_timeout) do
     # Clear any leftover messages from previous calls to prevent stale data
     receive do _ -> :ok after 0 -> :ok end
-    
-    # Use System.cmd instead of Port.open for better reliability
-    case System.cmd(get_binary_path(), [], timeout: timeout) do
+
+    # Use System.cmd without timeout option (not supported in this Elixir version)
+    case System.cmd(get_binary_path(), []) do
       {data, 0} when byte_size(data) >= 5 ->
         # Successfully got data, parse it
         parse_captcha_data(data)
       {_data, exit_code} ->
         {:error, "Binary exited with code #{exit_code}"}
-      {:error, :timeout} ->
-        {:timeout}
     end
   end
 

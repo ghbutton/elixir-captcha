@@ -26,3 +26,4 @@
 - Initial release of elixir-captcha library
 - Basic captcha generation using C binary
 - Port-based communication with external binary
+

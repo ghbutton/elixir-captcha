@@ -59,7 +59,7 @@ defmodule Captcha.Mixfile do
   defp description do
     """
     This is a Elixir lib for generating captcha. No dependencies. It drawing captcha image with C code. No ImageMagick, No RMagick.
-    
+
     This version includes critical production reliability improvements that fix intermittent empty image generation in production environments.
     """
   end
