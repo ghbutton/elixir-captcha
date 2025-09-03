@@ -49,8 +49,6 @@ defmodule Captcha do
         {:error, "Binary exited with code #{exit_code}"}
       {:error, :timeout} ->
         {:timeout}
-      {:error, reason} ->
-        {:error, "Failed to execute binary: #{reason}"}
     end
   end
 
