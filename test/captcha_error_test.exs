@@ -45,11 +45,7 @@ defmodule CaptchaErrorTest do
       
       # Should still work even under resource pressure
       Enum.each(results, fn result ->
-        case result do
-          {:ok, _, _} -> :ok
-          {:timeout} -> :ok
-          _ -> flunk("Unexpected result: #{inspect(result)}")
-        end
+        assert {:ok, _, _} = result
       end)
     end
   end
@@ -87,13 +83,9 @@ defmodule CaptchaErrorTest do
       
       results = Enum.map(tasks, &Task.await(&1, 10_000))
       
-      # All should either succeed or timeout, never crash
+      # All should succeed, never crash
       Enum.each(results, fn result ->
-        case result do
-          {:ok, _, _} -> :ok
-          {:timeout} -> :ok
-          _ -> flunk("Unexpected result: #{inspect(result)}")
-        end
+        assert {:ok, _, _} = result
       end)
     end
 
@@ -105,40 +97,17 @@ defmodule CaptchaErrorTest do
       
       # Should continue working after potential process issues
       Enum.each(results, fn result ->
-        case result do
-          {:ok, _, _} -> :ok
-          {:timeout} -> :ok
-          _ -> flunk("Unexpected result: #{inspect(result)}")
-        end
+        assert {:ok, _, _} = result
       end)
     end
   end
 
-  describe "timeout edge cases" do
-    test "handles very short timeouts" do
-      # Test with extremely short timeouts (ignored in this version)
-      results = for timeout <- [1, 5, 10, 50, 100] do
-        Captcha.get(timeout)
+  describe "function signature validation" do
+    test "function only accepts no arguments" do
+      # Test that the function only accepts no arguments
+      assert_raise UndefinedFunctionError, fn ->
+        Captcha.get(1000)
       end
-      
-      # Should handle short timeouts gracefully (ignored)
-      Enum.each(results, fn result ->
-        assert {:ok, _, _} = result
-      end)
-    end
-
-    test "handles very long timeouts" do
-      # Test with very long timeouts
-      results = for timeout <- [10_000, 30_000, 60_000] do
-        Captcha.get(timeout)
-      end
-      
-      # Should work with long timeouts
-      Enum.each(results, fn result ->
-        assert {:ok, text, image_data} = result
-        assert is_binary(text)
-        assert is_binary(image_data)
-      end)
     end
   end
 

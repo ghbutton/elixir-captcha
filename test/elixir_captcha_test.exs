@@ -12,13 +12,6 @@ defmodule CaptchaTest do
       assert byte_size(image_data) > 0
     end
 
-    test "generate with custom timeout" do
-      assert {:ok, text, image_data} = Captcha.get(5000)
-      assert is_binary(text)
-      assert is_binary(image_data)
-      assert byte_size(text) == 5
-    end
-
     test "generate multiple captchas" do
       results = for _ <- 1..5 do
         Captcha.get()
@@ -35,27 +28,9 @@ defmodule CaptchaTest do
 
   # Input validation tests
   describe "input validation" do
-    test "rejects negative timeout" do
-      assert_raise FunctionClauseError, fn ->
-        Captcha.get(-1000)
-      end
-    end
-
-    test "rejects zero timeout" do
-      assert_raise FunctionClauseError, fn ->
-        Captcha.get(0)
-      end
-    end
-
-    test "rejects non-integer timeout" do
-      assert_raise FunctionClauseError, fn ->
-        Captcha.get("1000")
-      end
-    end
-
-    test "rejects float timeout" do
-      assert_raise FunctionClauseError, fn ->
-        Captcha.get(1000.5)
+    test "function only accepts no arguments" do
+      assert_raise UndefinedFunctionError, fn ->
+        Captcha.get(1000)
       end
     end
   end

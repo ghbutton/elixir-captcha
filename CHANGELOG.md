@@ -10,15 +10,13 @@
 
 ### Added
 - Enhanced error handling with detailed error messages
-- Custom timeout support via `Captcha.get(timeout)`
 - Better documentation and examples
 - Production environment compatibility improvements
 
 ### Changed
 - **Breaking**: `Captcha.get()` now uses `System.cmd` internally instead of `Port.open`
 - **Breaking**: Improved error return format for better debugging
-- **Breaking**: Added timeout parameter support
-- **Breaking**: Changed default timeout from 1 second to 2 seconds
+- **Breaking**: Removed timeout parameter support for better compatibility
 
 ## [0.1.0] - Original Release
 

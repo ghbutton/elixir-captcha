@@ -6,17 +6,15 @@ defmodule Captcha do
   working directory, and environment variables that can cause problems in production deployments.
   """
 
-  @doc """
+    @doc """
   Generates a captcha image and returns the text and image data.
-
+  
   Returns:
   - `{:ok, text, image_data}` - Success with 5-character text and GIF image data
   - `{:error, reason}` - If generation fails
-
-  Note: Timeout handling is not implemented in this version due to Elixir version constraints.
-
+  
   ## Examples
-
+  
       iex> {:ok, text, image_data} = Captcha.get()
       iex> is_binary(text)
       true
@@ -26,34 +24,15 @@ defmodule Captcha do
       true
   """
   def get() do
-    get_with_timeout(2000)
-  end
-
-  @doc """
-  Generates a captcha with a custom timeout in milliseconds.
-
-  Note: Timeout parameter is currently ignored due to Elixir version constraints.
-
-  ## Examples
-
-      iex> {:ok, text, image_data} = Captcha.get(5000)
-      iex> is_binary(text)
-      true
-      iex> byte_size(text)
-      5
-      iex> is_binary(image_data)
-      true
-  """
-  def get(timeout) when is_integer(timeout) and timeout > 0 do
-    get_with_timeout(timeout)
+    generate_captcha()
   end
 
   # Private function that handles the actual captcha generation
-  defp get_with_timeout(_timeout) do
+  defp generate_captcha() do
     # Clear any leftover messages from previous calls to prevent stale data
     receive do _ -> :ok after 0 -> :ok end
 
-    # Use System.cmd without timeout option (not supported in this Elixir version)
+    # Use System.cmd to execute the binary
     case System.cmd(get_binary_path(), []) do
       {data, 0} when byte_size(data) >= 5 ->
         # Successfully got data, parse it

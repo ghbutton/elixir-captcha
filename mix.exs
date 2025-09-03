@@ -20,16 +20,21 @@ defmodule Captcha.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :captcha,
-     version: "0.1.1",
-     elixir: "~> 1.3",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     compilers: [:make, :elixir, :app],
-     description: description(),
-     aliases: aliases(),
-     package: package(),
-     deps: deps()]
+    [
+      app: :captcha,
+      version: "0.1.1",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      compilers: [:make, :elixir, :app],
+      description: description(),
+      aliases: aliases(),
+      package: package(),
+      deps: deps(),
+      elixirc_options: [
+        warnings_as_errors: true
+      ]
+    ]
   end
 
   # Configuration for the OTP application

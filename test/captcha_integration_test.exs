@@ -19,18 +19,11 @@ defmodule CaptchaIntegrationTest do
       assert success_count >= 45
     end
 
-    test "handles mixed timeout scenarios" do
-      # Test various timeout values (timeout parameter is ignored in this version)
-      timeouts = [100, 500, 1000, 2000, 5000]
-      
-      results = Enum.map(timeouts, fn timeout ->
-        Captcha.get(timeout)
-      end)
-      
-      # All should succeed since timeout is ignored
-      Enum.each(results, fn result ->
-        assert {:ok, _, _} = result
-      end)
+    test "function only accepts no arguments" do
+      # Test that the function only accepts no arguments
+      assert_raise UndefinedFunctionError, fn ->
+        Captcha.get(1000)
+      end
     end
 
     test "text uniqueness across multiple generations" do
@@ -65,7 +58,7 @@ defmodule CaptchaIntegrationTest do
   end
 
   describe "error recovery" do
-    test "recovers from timeout scenarios" do
+    test "recovers from potential issues" do
       # Test that the system recovers after potential issues
       _results = for _ <- 1..10 do
         Captcha.get()  # Generate some captchas
