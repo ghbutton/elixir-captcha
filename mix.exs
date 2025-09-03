@@ -21,7 +21,7 @@ defmodule Captcha.Mixfile do
 
   def project do
     [app: :captcha,
-     version: "0.1.0",
+     version: "0.1.1",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -59,6 +59,8 @@ defmodule Captcha.Mixfile do
   defp description do
     """
     This is a Elixir lib for generating captcha. No dependencies. It drawing captcha image with C code. No ImageMagick, No RMagick.
+    
+    This version includes critical production reliability improvements that fix intermittent empty image generation in production environments.
     """
   end
 
