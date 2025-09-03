@@ -41,14 +41,16 @@ defmodule Captcha do
     receive do _ -> :ok after 0 -> :ok end
     
     # Use System.cmd instead of Port.open for better reliability
-    case System.cmd(get_binary_path(), []) do
+    case System.cmd(get_binary_path(), [], timeout: timeout) do
       {data, 0} when byte_size(data) >= 5 ->
         # Successfully got data, parse it
         parse_captcha_data(data)
       {_data, exit_code} ->
         {:error, "Binary exited with code #{exit_code}"}
-    after
-      timeout -> {:timeout}
+      {:error, :timeout} ->
+        {:timeout}
+      {:error, reason} ->
+        {:error, "Failed to execute binary: #{reason}"}
     end
   end
 
