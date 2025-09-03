@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Compile.Make do
   def run(_) do
     {result, _error_code} = System.cmd("make", [], stderr_to_stdout: true)
-    Mix.shell.info result
+    Mix.shell().info(result)
 
     :ok
   end
@@ -10,7 +10,7 @@ end
 defmodule Mix.Tasks.Clean.Make do
   def run(_) do
     {result, _error_code} = System.cmd("make", ["clean"], stderr_to_stdout: true)
-    Mix.shell.info result
+    Mix.shell().info(result)
 
     :ok
   end
@@ -24,8 +24,8 @@ defmodule Captcha.Mixfile do
       app: :captcha,
       version: "0.1.1",
       elixir: "~> 1.3",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       compilers: [:make, :elixir, :app],
       description: description(),
       aliases: aliases(),
@@ -71,11 +71,24 @@ defmodule Captcha.Mixfile do
 
   defp package do
     [
-     name: :captcha,
-     files: ["lib", "priv", "mix.exs", "README*", "LICENSE*", "src", "test", "config", "Makefile"],
-     maintainers: ["davidqhr"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/davidqhr/elixir-captcha",
-              "Docs" => "https://github.com/davidqhr/elixir-captcha"}]
+      name: :captcha,
+      files: [
+        "lib",
+        "priv",
+        "mix.exs",
+        "README*",
+        "LICENSE*",
+        "src",
+        "test",
+        "config",
+        "Makefile"
+      ],
+      maintainers: ["davidqhr"],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/davidqhr/elixir-captcha",
+        "Docs" => "https://github.com/davidqhr/elixir-captcha"
+      }
+    ]
   end
 end
