@@ -175,13 +175,13 @@ defmodule CaptchaTest do
   # System and environment tests
   describe "system and environment" do
     test "binary path is accessible" do
-      binary_path = Path.join(:code.priv_dir(:captcha), "captcha")
+      binary_path = Path.join(:code.priv_dir(:captcha_c), "captcha")
       assert File.exists?(binary_path)
       assert File.stat!(binary_path).type == :regular
     end
 
     test "binary is executable" do
-      binary_path = Path.join(:code.priv_dir(:captcha), "captcha")
+      binary_path = Path.join(:code.priv_dir(:captcha_c), "captcha")
       stat = File.stat!(binary_path)
       # Check if file has execute permissions (may vary by system)
       assert stat.access in [:read_write_execute, :read_write, :execute]

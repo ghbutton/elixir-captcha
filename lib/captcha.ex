@@ -52,6 +52,6 @@ defmodule Captcha do
 
   # Get the path to the captcha binary
   defp get_binary_path() do
-    Path.join(:code.priv_dir(:captcha), "captcha")
+    Path.join(:code.priv_dir(:captcha_c), "captcha")
   end
 end
