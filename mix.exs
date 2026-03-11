@@ -22,10 +22,10 @@ defmodule Captcha.Mixfile do
   def project do
     [
       app: :captcha,
-      version: "0.1.2",
+      version: "0.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      compilers: [:make],
+      compilers: [:make] ++ Mix.compilers(),
       description: description(),
       aliases: aliases(),
       package: package(),
@@ -73,13 +73,10 @@ defmodule Captcha.Mixfile do
       name: :captcha_c,
       files: [
         "lib",
-        "priv",
         "mix.exs",
         "README*",
         "LICENSE*",
         "src",
-        "test",
-        "config",
         "Makefile"
       ],
       maintainers: ["ghbutton"],
