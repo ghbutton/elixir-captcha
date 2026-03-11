@@ -22,11 +22,10 @@ defmodule Captcha.Mixfile do
   def project do
     [
       app: :captcha,
-      version: "0.1.1",
-      elixir: "~> 1.3",
-      build_embedded: Mix.env() == :prod,
+      version: "0.1.2",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      compilers: [:make, :elixir, :app],
+      compilers: [:make],
       description: description(),
       aliases: aliases(),
       package: package(),
@@ -41,7 +40,7 @@ defmodule Captcha.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger]]
+    [extra_applications: [:logger]]
   end
 
   # Dependencies can be Hex packages:
@@ -54,7 +53,7 @@ defmodule Captcha.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:ex_doc, ">= 0.0.0", only: :dev}]
+    [{:ex_doc, "~> 0.35", only: :dev, runtime: false}]
   end
 
   defp aliases do
@@ -71,7 +70,7 @@ defmodule Captcha.Mixfile do
 
   defp package do
     [
-      name: :captcha,
+      name: :captcha_c,
       files: [
         "lib",
         "priv",
@@ -83,11 +82,11 @@ defmodule Captcha.Mixfile do
         "config",
         "Makefile"
       ],
-      maintainers: ["davidqhr"],
+      maintainers: ["ghbutton"],
       licenses: ["MIT"],
       links: %{
-        "GitHub" => "https://github.com/davidqhr/elixir-captcha",
-        "Docs" => "https://github.com/davidqhr/elixir-captcha"
+        "GitHub" => "https://github.com/ghbutton/elixir-captcha",
+        "Docs" => "https://github.com/ghbutton/elixir-captcha"
       }
     ]
   end
