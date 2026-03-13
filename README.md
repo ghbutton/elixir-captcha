@@ -32,6 +32,15 @@ def deps do
   [{:captcha_c, "~> 0.1.0"}]
 end
 ```
+## Docker
+
+When building a release in Docker, the compiled captcha binary may not be copied into the release automatically. You may need to manually copy it:
+
+```dockerfile
+RUN mkdir -p _build/prod/lib/captcha_c/priv && \
+    cp deps/captcha_c/priv/captcha _build/prod/lib/captcha_c/priv/captcha
+```
+
 ## Usage
 
 ```elixir

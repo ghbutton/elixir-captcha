@@ -1,7 +1,11 @@
 defmodule Mix.Tasks.Compile.Make do
   def run(_) do
-    {result, _error_code} = System.cmd("make", [], stderr_to_stdout: true)
+    {result, error_code} = System.cmd("make", [], stderr_to_stdout: true)
     Mix.shell().info(result)
+
+    if error_code != 0 do
+      Mix.raise("Make failed with exit code #{error_code}")
+    end
 
     :ok
   end
@@ -9,8 +13,12 @@ end
 
 defmodule Mix.Tasks.Clean.Make do
   def run(_) do
-    {result, _error_code} = System.cmd("make", ["clean"], stderr_to_stdout: true)
+    {result, error_code} = System.cmd("make", ["clean"], stderr_to_stdout: true)
     Mix.shell().info(result)
+
+    if error_code != 0 do
+      Mix.raise("Make clean failed with exit code #{error_code}")
+    end
 
     :ok
   end
@@ -22,7 +30,7 @@ defmodule Captcha.Mixfile do
   def project do
     [
       app: :captcha_c,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       compilers: [:make] ++ Mix.compilers(),
